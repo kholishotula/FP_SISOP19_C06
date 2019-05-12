@@ -12,8 +12,10 @@
 pthread_t tid1,tid2;
 char filenam[256];
 int flag = 0; int playable = 0;
-int idx = 0;
+int idx;
 char filelist[1000][256];
+
+void makelist();
 
 void mp3player(void *arg)
 {   
@@ -99,6 +101,7 @@ void* komando(void* arg){
         }
     else if(strcmp(cmd,"list")==0){
         int i = 0;
+        makelist();
         while(i<idx){
             printf("%d. ",i+1);
             printf("%s\n", filelist[i]);
@@ -137,6 +140,7 @@ void* komando(void* arg){
 
 void makelist()
 {
+    idx = 0;
     DIR *d;
     struct dirent *dir; 
     d = opendir("/home/nandha/Downloads/LAGU");
@@ -145,9 +149,8 @@ void makelist()
         while ((dir = readdir(d)) != NULL)
         {   
             char temp[256];
-            if(strcmp(dir->d_name,".")==0 || strcmp(dir->d_name,"..")==0){
-                
-            }
+            if(strcmp(dir->d_name,".")==0 || strcmp(dir->d_name,"..")==0)
+                continue;
             else{
                   strcpy(filelist[idx],dir->d_name);
                   idx++;
@@ -159,7 +162,6 @@ void makelist()
 }
 int main()
 {   
-    makelist();
     pthread_create(&(tid2), NULL, komando, NULL);
     pthread_create(&(tid1), NULL, mp3player, NULL);
 
