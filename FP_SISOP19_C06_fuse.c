@@ -30,11 +30,6 @@ char *search(char name[])
     current = head;
     while(current!=tail)
     {
-        if(current->name == name)
-        {
-            sprintf(to_return, "%s%s", current->path, current->name);
-            return to_return;
-        }
         if(strcmp(current->name, name)==0)
         {
             sprintf(to_return, "%s%s", current->path, current->name);
